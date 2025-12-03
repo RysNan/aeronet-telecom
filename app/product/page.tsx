@@ -134,9 +134,9 @@ export default function ProductPage() {
           <div className="hidden md:flex items-center gap-8 font-medium text-sm text-slate-600">
             <Link href="/" className="hover:text-blue-600 transition">Beranda</Link>
             <Link href="/produk" className="text-blue-600 font-semibold">Produk</Link>
-            <Link href="/promo " className="hover:text-blue-600 transition">Promo</Link>
-            <Link href="#" className="hover:text-blue-600 transition">Cek Coverage</Link>
-            <Link href="#" className="hover:text-blue-600 transition">Bantuan</Link>
+            <Link href="/promo" className="hover:text-blue-600 transition">Promo</Link>
+            <Link href="/coverage" className="hover:text-blue-600 transition">Cek Coverage</Link>
+            <Link href="/support" className="hover:text-blue-600 transition">Bantuan</Link>
           </div>
           <div className="hidden md:flex items-center gap-4">
             <button className="text-slate-600 font-medium hover:text-blue-600">Masuk</button>

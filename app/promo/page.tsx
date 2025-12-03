@@ -108,10 +108,10 @@ export default function PromoPage() {
           </div>
           <div className="hidden md:flex items-center gap-8 font-medium text-sm text-slate-600">
             <Link href="/" className="hover:text-blue-600 transition">Beranda</Link>
-            <Link href="/produk" className="hover:text-blue-600 transition">Produk</Link>
+            <Link href="/product" className="hover:text-blue-600 transition">Produk</Link>
             <Link href="/promo" className="text-blue-600 font-semibold">Promo</Link>
-            <Link href="#" className="hover:text-blue-600 transition">Cek Coverage</Link>
-            <Link href="#" className="hover:text-blue-600 transition">Bantuan</Link>
+            <Link href="/coverage" className="hover:text-blue-600 transition">Cek Coverage</Link>
+            <Link href="/support" className="hover:text-blue-600 transition">Bantuan</Link>
           </div>
           <div className="hidden md:flex items-center gap-4">
             <button className="text-slate-600 font-medium hover:text-blue-600">Masuk</button>
