@@ -33,11 +33,11 @@ export default function AeronetLandingPage() {
 
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center gap-8 font-medium text-sm text-slate-600">
-            <Link href="/" className="hover:text-blue-600 transition">Beranda</Link>
+            <Link href="/" className="text-blue-600 font-semibold">Beranda</Link>
             <Link href="/product" className="hover:text-blue-600 transition">Produk</Link>
             <Link href="/promo" className="hover:text-blue-600 transition">Promo</Link>
-            <Link href="#" className="hover:text-blue-600 transition">Cek Coverage</Link>
-            <Link href="#" className="hover:text-blue-600 transition">Bantuan</Link>
+            <Link href="/coverage" className="hover:text-blue-600 transition">Cek Coverage</Link>
+            <Link href="/support" className="hover:text-blue-600 transition">Bantuan</Link>
           </div>
 
           {/* Auth Buttons */}
