@@ -1,12 +1,31 @@
 
 # auth
-POST /api/auth/register     -> untuk register
-POST /api/auth/login        -> untuk login
-POST /api/auth/logout       -> untuk logout
+POST /api/auth/register             -> untuk register
+POST /api/auth/login                -> untuk login
+POST /api/auth/logout               -> untuk logout
 
 # paket
-POST /api/package/          -> untuk create
-GET /api/package/           -> untuk lihat semua data package
-GET /api/package/{id}       -> untuk lihat 1 data package
-PUT /api/package/{id}       -> untuk edit data package
-PATCH /api/package/{id}     -> untuk edit data package
+POST /api/package/                  -> untuk create
+GET /api/package/                   -> untuk lihat semua packages
+GET /api/package/{id}               -> untuk lihat 1 data package
+PUT /api/package/{id}               -> untuk edit data package
+PATCH /api/package/{id}             -> untuk edit data package
+
+# order
+
+#client
+POST /api/order/                    -> untuk create
+GET /api/order/                     -> untuk lihat semua orders
+GET /api/order/{id}                 -> untuk lihat 1 data order
+
+#admin
+PATCH /api/order/{id}               -> untuk approve order yang pending
+
+
+#client
+POST /api/payment/                  -> untuk create
+GET /api/payment/                   -> untuk lihat semua payment
+GET /api/payment/{id}               -> untuk lihat 1 data payment
+
+#admin
+PATCH /api/payment/{id}             -> untuk approve payment yang pending
