@@ -1,9 +1,8 @@
 import { NextResponse } from "next/server";
 import { connectDB } from "@/app/lib/db";
 import { Package } from "@/app/models/Package";
-import mongoose from "mongoose"; // WAJIB untuk validasi ID
+import mongoose from "mongoose"; 
 
-// Definisikan tipe untuk mengatasi bug Next.js runtime (params is a Promise)
 type ParamsPromise = Promise<{ id: string }>;
 
 

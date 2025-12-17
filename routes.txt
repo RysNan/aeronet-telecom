@@ -1,0 +1,12 @@
+
+# auth
+POST /api/auth/register     -> untuk register
+POST /api/auth/login        -> untuk login
+POST /api/auth/logout       -> untuk logout
+
+# paket
+POST /api/package/          -> untuk create
+GET /api/package/           -> untuk lihat semua data package
+GET /api/package/{id}       -> untuk lihat 1 data package
+PUT /api/package/{id}       -> untuk edit data package
+PATCH /api/package/{id}     -> untuk edit data package

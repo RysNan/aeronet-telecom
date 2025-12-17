@@ -43,20 +43,31 @@ export async function POST(req: Request) {
             );
         }
 
-        // 4. Login Berhasil (Mengembalikan data tanpa password)
-        return NextResponse.json(
-            {
-                message: "Login berhasil.",
-                data: {
-                    id: user._id,
-                    name: user.name,
-                    email: user.email,
-                    role: user.role,
-                    isActive: user.isActive,
+        if (isMatch) {
+            const response = NextResponse.json(
+                {
+                    message: "Login berhasil.",
+                    data: {
+                        id: user._id,
+                        name: user.name,
+                        email: user.email,
+                        role: user.role,
+                        isActive: user.isActive,
+                    },
                 },
-            },
-            { status: 200 }
-        );
+                { status: 200 }
+            );
+            
+            // 💡 LANGKAH PENTING: Set cookie userRole
+            response.cookies.set('userRole', user.role, {
+                httpOnly: true, // Paling aman: cookie tidak dapat diakses oleh JavaScript frontend
+                secure: process.env.NODE_ENV === 'production',
+                maxAge: 60 * 60 * 24 * 7, // 1 minggu
+                path: '/', // Tersedia di seluruh aplikasi
+            });
+
+            return response; // Kembalikan response dengan cookie yang sudah di-set
+        }
 
     } catch (error) {
         console.error("Login Error:", error);
