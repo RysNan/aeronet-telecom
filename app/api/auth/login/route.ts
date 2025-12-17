@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import { connectDB } from "@/app/lib/db";
-import { User } from "@/app/models/User"; // Import model User
-// Asumsikan fungsi untuk membandingkan password ada di hash.ts
+import { User } from "@/app/models/User"; 
 import { comparePassword } from "@/app/lib/hash"; 
 
 /**
@@ -14,7 +13,6 @@ export async function POST(req: Request) {
         const body = await req.json();
         const { email, password } = body;
 
-        // 1. Validasi Input
         if (!email || !password) {
             return NextResponse.json(
                 { message: "Email dan password wajib diisi." },
@@ -22,24 +20,21 @@ export async function POST(req: Request) {
             );
         }
 
-        // 2. Cari Pengguna berdasarkan Email
         const user = await User.findOne({ email });
 
         if (!user) {
-            // Mengembalikan pesan yang umum untuk keamanan (tidak spesifik 'email tidak ditemukan')
             return NextResponse.json(
                 { message: "Kredensial tidak valid." },
-                { status: 401 } // Unauthorized
+                { status: 401 } 
             );
         }
 
-        // 3. Bandingkan Password
         const isMatch = await comparePassword(password, user.password);
 
         if (!isMatch) {
             return NextResponse.json(
                 { message: "Kredensial tidak valid." },
-                { status: 401 } // Unauthorized
+                { status: 401 } 
             );
         }
 
@@ -58,7 +53,6 @@ export async function POST(req: Request) {
                 { status: 200 }
             );
             
-            // 💡 LANGKAH PENTING: Set cookie userRole
             response.cookies.set('userRole', user.role, {
                 httpOnly: true, // Paling aman: cookie tidak dapat diakses oleh JavaScript frontend
                 secure: process.env.NODE_ENV === 'production',
