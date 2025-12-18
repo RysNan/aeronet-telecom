@@ -1,4 +1,15 @@
-export default function PromoPage() {
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
+import LogoutButton from "@/app/components/LogoutButton"; 
+
+export default async function PromoPage() {
+  const cookieStore = await cookies();
+  const role = cookieStore.get("userRole")?.value;
+
+  if (role !== "client") {
+    redirect("/login");
+  }
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
       <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
@@ -6,8 +17,12 @@ export default function PromoPage() {
           Welcome to the Promo Page!
         </h1>
         <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-          Check out our latest promotions and special offers. Don't miss out!
+          Check out our latest promotions and special offers.
         </p>
+        
+        {/* Tombol Logout muncul di sini */}
+        <LogoutButton /> 
+        
       </main>
     </div>
   );
