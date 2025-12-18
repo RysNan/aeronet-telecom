@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useState } from 'react';
-import Link from 'next/link';
-import { 
+import React, { useEffect, useState } from "react";
+import Link from "next/link";
+import {
   Wifi, 
   Check, 
   Search, 
@@ -17,109 +17,52 @@ import {
   Zap,
   ShieldCheck,
   Users
-} from 'lucide-react';
+} from "lucide-react";
 
-// Data Paket (Sesuai input Anda)
-const internetPackages = [
-  {
-    id: 1,
-    name: "Fiber 50 Mbps",
-    speed: "Up to 50 Mbps",
-    price: "299.000",
-    tag: null,
-    features: [
-      "Unlimited kuota internet",
-      "Gratis instalasi & aktivasi",
-      "Customer support 24/7",
-      "Router WiFi gratis",
-      "Cocok untuk 3-4 perangkat"
-    ]
-  },
-  {
-    id: 2,
-    name: "Fiber 100 Mbps",
-    speed: "Up to 100 Mbps",
-    price: "499.000",
-    tag: "POPULER",
-    tagColor: "bg-blue-600",
-    features: [
-      "Unlimited kuota internet",
-      "Gratis instalasi & aktivasi",
-      "Priority customer support",
-      "Router WiFi premium",
-      "Bonus streaming 3 bulan",
-      "Cocok untuk 5-7 perangkat"
-    ]
-  },
-  {
-    id: 3,
-    name: "Fiber 150 Mbps",
-    speed: "Up to 150 Mbps",
-    price: "699.000",
-    tag: null,
-    features: [
-      "Unlimited kuota internet",
-      "Gratis instalasi & aktivasi",
-      "Priority customer support",
-      "Router WiFi mesh system",
-      "Bonus streaming 6 bulan",
-      "Cocok untuk 8-10 perangkat"
-    ]
-  },
-  {
-    id: 4,
-    name: "Fiber 200 Mbps",
-    speed: "Up to 200 Mbps",
-    price: "899.000",
-    tag: "BEST VALUE",
-    tagColor: "bg-emerald-500",
-    features: [
-      "Unlimited kuota internet",
-      "Gratis instalasi & aktivasi",
-      "Dedicated customer support",
-      "Mesh WiFi system premium",
-      "Bonus entertainment 6 bulan",
-      "Cocok untuk 10-15 perangkat"
-    ]
-  },
-  {
-    id: 5,
-    name: "Fiber 300 Mbps",
-    speed: "Up to 300 Mbps",
-    price: "1.199.000",
-    tag: null,
-    features: [
-      "Unlimited kuota internet",
-      "Gratis instalasi & aktivasi",
-      "Dedicated customer support",
-      "Mesh WiFi 6 system",
-      "Bonus entertainment 12 bulan",
-      "IP Static gratis",
-      "Cocok untuk 15-20 perangkat"
-    ]
-  },
-  {
-    id: 6,
-    name: "Fiber 500 Mbps",
-    speed: "Up to 500 Mbps",
-    price: "1.699.000",
-    tag: "ULTRA FAST",
-    tagColor: "bg-violet-600",
-    features: [
-      "Unlimited kuota internet",
-      "Gratis instalasi & aktivasi",
-      "VIP customer support",
-      "WiFi 6E mesh system",
-      "Bonus entertainment premium",
-      "IP Static & Domain gratis",
-      "Cocok untuk 20+ perangkat"
-    ]
-  }
-];
+/* ===================== TYPES ===================== */
+
+interface ApiPackage {
+  _id: string;
+  name: string;
+  kecepatan_mbps: number;
+  kuota_gb: number;
+  harga: number;
+  kapasitas_device: number;
+  isActive: boolean;
+}
+
+interface FeatureProps {
+  text: string;
+}
+
+interface StatProps {
+  icon: React.ReactNode;
+  title: string;
+  desc: string;
+}
+
+/* ===================== PAGE ===================== */
 
 export default function ProductPage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [filterSpeed, setFilterSpeed] = useState('Semua');
+  const [packages, setPackages] = useState<ApiPackage[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    const fetchPackages = async () => {
+      try {
+        const res = await fetch("http://localhost:3000/api/package");
+        const data: ApiPackage[] = await res.json();
+        setPackages(data);
+      } catch (error) {
+        console.error("Gagal fetch package:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPackages();
+  }, []);
 
   return (
     <div className="min-h-screen bg-slate-50 font-sans text-slate-800">
@@ -150,7 +93,7 @@ export default function ProductPage() {
         </div>
       </nav>
 
-      {/* --- HEADER / HERO SECTION --- */}
+      {/* ================= HERO ================= */}
       <section className="bg-white border-b border-slate-200 pt-16 pb-12">
         <div className="container mx-auto px-4 md:px-8">
           <div className="max-w-4xl">
@@ -234,73 +177,80 @@ export default function ProductPage() {
         </div>
       </section>
 
-      {/* --- PRODUCT GRID --- */}
-      <section className="py-12 bg-slate-50">
-        <div className="container mx-auto px-4 md:px-8">
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-            {internetPackages.map((pkg) => (
-              <div 
-                key={pkg.id} 
-                className={`relative bg-white rounded-2xl p-6 md:p-8 border transition-all duration-300 hover:-translate-y-1 hover:shadow-xl flex flex-col h-full
-                  ${pkg.tag ? 'border-blue-200 shadow-lg' : 'border-slate-200 shadow-sm'}
-                `}
-              >
-                {/* Badge/Tag */}
-                {pkg.tag && (
-                  <div className={`absolute top-0 right-0 ${pkg.tagColor} text-white text-xs font-bold px-4 py-1.5 rounded-bl-xl rounded-tr-xl tracking-wider`}>
-                    {pkg.tag}
-                  </div>
-                )}
+      
+      {/* ================= PRODUCT GRID ================= */}
+      <section className="py-12">
+        <div className="container mx-auto px-4">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
 
-                {/* Header */}
-                <div className="mb-6">
-                  <div className="inline-block px-3 py-1 bg-slate-100 rounded-full text-xs font-semibold text-slate-600 mb-3">
-                    {pkg.speed}
-                  </div>
-                  <h3 className="text-2xl font-bold text-slate-900">{pkg.name}</h3>
-                </div>
+            {loading ? (
+              <p className="col-span-full text-center text-slate-500">
+                Memuat paket...
+              </p>
+            ) : packages.length === 0 ? (
+              <p className="col-span-full text-center text-slate-500">
+                Paket tidak tersedia
+              </p>
+            ) : (
+              packages.map((pkg) => {
+                const isRecommended = pkg.kapasitas_device >= 30;
 
-                {/* Price */}
-                <div className="mb-8 pb-8 border-b border-slate-100">
-                  <div className="flex items-baseline gap-1">
-                    <span className="text-sm font-medium text-slate-500">Rp</span>
-                    <span className="text-4xl font-extrabold text-slate-900 tracking-tight">{pkg.price}</span>
-                  </div>
-                  <span className="text-sm text-slate-500 font-medium">/bulan</span>
-                </div>
+                return (
+                  <div
+                    key={pkg._id}
+                    className={`relative bg-white rounded-2xl p-8 border flex flex-col transition hover:shadow-xl
+                      ${
+                        isRecommended
+                          ? "border-blue-200 shadow-lg"
+                          : "border-slate-200"
+                      }
+                    `}
+                  >
+                    {isRecommended && (
+                      <span className="absolute top-0 right-0 bg-blue-600 text-white text-xs font-bold px-4 py-1.5 rounded-bl-xl rounded-tr-xl">
+                        REKOMENDASI
+                      </span>
+                    )}
 
-                {/* Features */}
-                <ul className="space-y-4 mb-8 flex-grow">
-                  {pkg.features.map((feature, idx) => (
-                    <li key={idx} className="flex items-start gap-3 text-sm text-slate-600">
-                      <div className="mt-0.5 min-w-[18px]">
-                        <Check size={18} className="text-blue-600" />
+                    <div className="mb-6">
+                      <span className="inline-block px-3 py-1 bg-slate-100 rounded-full text-xs mb-3">
+                        {pkg.kecepatan_mbps} Mbps
+                      </span>
+                      <h3 className="text-2xl font-bold">{pkg.name}</h3>
+                    </div>
+
+                    <div className="mb-6 border-b pb-6">
+                      <div className="text-4xl font-extrabold">
+                        Rp {pkg.harga.toLocaleString("id-ID")}
                       </div>
-                      <span className="leading-tight">{feature}</span>
-                    </li>
-                  ))}
-                </ul>
+                      <span className="text-sm text-slate-500">/bulan</span>
+                    </div>
 
-                {/* Action Button */}
-                <button className={`w-full py-3.5 rounded-xl font-bold transition-all flex items-center justify-center gap-2 group
-                  ${pkg.tag 
-                    ? 'bg-blue-600 text-white hover:bg-blue-700 shadow-blue-200 shadow-lg' 
-                    : 'bg-white border-2 border-slate-200 text-slate-700 hover:border-blue-600 hover:text-blue-600'}
-                `}>
-                  Lihat Detail
-                  <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform"/>
-                </button>
-              </div>
-            ))}
-          </div>
+                    <ul className="space-y-3 mb-8 flex-grow text-sm">
+                      <Feature text={`Kecepatan hingga ${pkg.kecepatan_mbps} Mbps`} />
+                      <Feature text={`Kuota ${pkg.kuota_gb.toLocaleString()} GB`} />
+                      <Feature text={`Mendukung ${pkg.kapasitas_device} perangkat`} />
+                      <Feature text="Cocok untuk kantor & bisnis" />
+                    </ul>
 
-          {/* Pagination */}
-          <div className="flex justify-center items-center gap-2">
-            <button className="w-10 h-10 flex items-center justify-center rounded-lg border border-slate-200 text-slate-400 hover:border-slate-300 hover:text-slate-600 disabled:opacity-50">‹</button>
-            <button className="w-10 h-10 flex items-center justify-center rounded-lg bg-blue-600 text-white font-bold shadow-lg shadow-blue-200">1</button>
-            <button className="w-10 h-10 flex items-center justify-center rounded-lg border border-slate-200 text-slate-600 hover:border-blue-200 hover:text-blue-600 hover:bg-blue-50 transition">2</button>
-            <button className="w-10 h-10 flex items-center justify-center rounded-lg border border-slate-200 text-slate-600 hover:border-blue-200 hover:text-blue-600 hover:bg-blue-50 transition">3</button>
-            <button className="w-10 h-10 flex items-center justify-center rounded-lg border border-slate-200 text-slate-600 hover:border-slate-300 hover:text-slate-800">›</button>
+                    <button
+                      className={`w-full py-3 rounded-xl font-bold flex items-center justify-center gap-2
+                        ${
+                          isRecommended
+                            ? "bg-blue-600 text-white hover:bg-blue-700"
+                            : "border-2 hover:border-blue-600 hover:text-blue-600"
+                        }
+                      `}
+                    >
+                      Lihat Detail
+                       <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform"/>
+                    </button>
+                  </div>
+
+                  
+                );
+              })
+            )}
           </div>
         </div>
       </section>
@@ -356,6 +306,31 @@ export default function ProductPage() {
         </div>
       </footer>
 
+    </div>
+  );
+}
+
+/* ===================== COMPONENTS ===================== */
+
+function Feature({ text }: FeatureProps) {
+  return (
+    <li className="flex items-center gap-2">
+      <Check size={16} className="text-blue-600" />
+      <span>{text}</span>
+    </li>
+  );
+}
+
+function Stat({ icon, title, desc }: StatProps) {
+  return (
+    <div className="flex items-center gap-3">
+      <div className="p-2 bg-blue-100 text-blue-600 rounded-lg">
+        {icon}
+      </div>
+      <div>
+        <div className="font-bold">{title}</div>
+        <div className="text-sm text-slate-500">{desc}</div>
+      </div>
     </div>
   );
 }
