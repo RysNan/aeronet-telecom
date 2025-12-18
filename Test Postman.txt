@@ -1,0 +1,78 @@
+Test Postman
+
+ini aku tulis yang buat post sama patch nya kalau mau get by id tinggal tambahin /id 
+
+POST -> http://localhost:3000/app/api/auth/register
+
+{
+    "name": "Budi Client",
+    "email": "budi.client@example.com",
+    "password": "Password123",
+    "role": "client" 
+}
+
+=====================================================================
+
+POST -> http://localhost:3000/app/api/auth/login
+
+{
+    "email": "budi.client@example.com",
+    "password": "Password123"
+}
+
+=====================================================================
+
+POST -> http://localhost:3000/app/api/auth/logout
+
+=====================================================================
+
+POST -> http://localhost:3000/app/api/package/
+
+{
+    "name": "Paket Super Cepat",
+    "kecepatan_mbps": 500,
+    "kuota_gb": 1000,
+    "harga": 450000,
+    "kapasitas_device": 10
+}
+
+=====================================================================
+
+POST -> http://localhost:3000/app/api/order/
+
+{
+    "packageId": "<PACKAGE_ID_SAMPLE>", 
+    "userId": "<CLIENT_ID_SAMPLE>" 
+}
+
+=====================================================================
+
+ini admin approve order
+
+PATCH -> http://localhost:3000/app/api/order/ID_ORDER
+
+{
+    "orderStatus": "approved",
+    "adminId": "<ADMIN_ID_SAMPLE>" 
+}
+
+=====================================================================
+
+POST -> http://localhost:3000/app/api/payment/
+{
+    "orderId": "<ORDER_ID_PENDING>", 
+    "amount": 450000,           
+    "paymentMethod": "Bank Transfer BCA",
+    "transactionId": "TRX-Aero-A1B2C3D4"
+}
+
+=====================================================================
+
+ini admin approve payment
+
+PATCH -> http://localhost:3000/app/api/payment/PAYMENT_ID
+
+{
+    "paymentStatus": "paid",
+    "adminId": "<ADMIN_ID_SAMPLE>" 
+}
